@@ -8,7 +8,7 @@ const app = express();
 
 const port = process.env.PORT;
 
-const token = process.env.WHATSAPP_TOKEN
+// const token = process.env.WHATSAPP_TOKEN
 
 const verify_token = process.env.VERIFY_TOKEN;
 
@@ -22,24 +22,11 @@ app.get('/', (req, res) => {
     })
 })
 
-app.get("/webhook", (req, res) => {
-    let mode = req.query["hub.mode"];
-    let token = req.query["hub.verify_token"];
-    let challenge = req.query["hub.challenge"];
-  
-    if (mode && token) {
-      if (mode === "subscribe" && token === verify_token) {
-        console.log("WEBHOOK_VERIFIED");
-        res.status(200).send(challenge);
-      } else {
-        res.sendStatus(403);
-      }
-    }
-});
-
 app.post('/webhook', async (req, res) => { 
     
     // let from = req.body.entry[0].changes[0].value.messages[0].from;
+
+    console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
 
     const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
     
@@ -57,7 +44,6 @@ app.post('/webhook', async (req, res) => {
                     text: {body: 'Test: ' + message.text.body}
                 },
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })
@@ -68,5 +54,20 @@ app.post('/webhook', async (req, res) => {
             console.error('Error sending WhatsApp message:', error);
             res.status(500).json({ error: 'Failed to send WhatsApp message' });
         }
+    }
+});
+
+app.get("/webhook", (req, res) => {
+    let mode = req.query["hub.mode"];
+    let token = req.query["hub.verify_token"];
+    let challenge = req.query["hub.challenge"];
+  
+    if (mode && token) {
+      if (mode === "subscribe" && token === verify_token) {
+        console.log("WEBHOOK_VERIFIED");
+        res.status(200).send(challenge);
+      } else {
+        res.sendStatus(403);
+      }
     }
 });
