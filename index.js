@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT;
 
-const token = 'EAAGT5T53Y4gBOy72rReJ1q9RksbIoiisuGe4ZAIOZCbqBv4sUQEl7DtWAmGRIVjz62COuWYLjPD4gHRansrHkbA3ngcRKe3PY9vmDKU4yJ7ZCCarUtRteMewJAjMwpkxFbeJifJl4EZBoab1QpEqzWbhEfL68WXPcEF4nhNRhAwFwCtxSUM7quoPZC8IvkHuZAKFflej8I39DlIg2hT9gZD';
+const token = process.env.TOKEN;
 
 app.use(bodyParser.json())
 
@@ -18,6 +18,21 @@ app.get('/', (req, res) => {
         message: 'working'
     })
 })
+
+app.get("/webhook", (req, res) => {
+    let mode = req.query["hub.mode"];
+    let token = req.query["hub.verify_token"];
+    let challenge = req.query["hub.challenge"];
+  
+    if (mode && token) {
+      if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
+        console.log("WEBHOOK_VERIFIED");
+        res.status(200).send(challenge);
+      } else {
+        res.sendStatus(403);
+      }
+    }
+});
 
 app.post('/webhook', async (req, res) => { 
     let phone_number_id = req.body.entry[0].changes[0].value.metadata.phone_number_id;
