@@ -8,7 +8,7 @@ const app = express();
 
 const port = process.env.PORT;
 
-const token = process.env.TOKEN;
+const token = process.env.WHATSAPP_TOKEN
 
 const verify_token = process.env.VERIFY_TOKEN;
 
@@ -38,30 +38,35 @@ app.get("/webhook", (req, res) => {
 });
 
 app.post('/webhook', async (req, res) => { 
-    let phone_number_id = req.body.entry[0].changes[0].value.metadata.phone_number_id;
-    let from = req.body.entry[0].changes[0].value.messages[0].from;
-    let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
-    // let from = '+250782767382';
-    // let msg_body = 'Hello wiredin World!'
     
-    try {
-        axios({
-            method: 'POST',
-            url: 'https://graph.facebook.com/v18.0/' + phone_number_id + '/messages?access_token=' + token,
-            data: {
-                messaging_product: 'whatsapp',
-                to: from,
-                text: {body: 'wcA: ' + msg_body}
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+    // let from = req.body.entry[0].changes[0].value.messages[0].from;
 
-        
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error sending WhatsApp message:', error);
-        res.status(500).json({ error: 'Failed to send WhatsApp message' });
+    const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
+    
+    if (message?.type === 'text') {
+        const phone_number_id = req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
+    
+    
+        try {
+            axios({
+                method: 'POST',
+                url: 'https://graph.facebook.com/v18.0/' + phone_number_id + '/messages',
+                data: {
+                    messaging_product: 'whatsapp',
+                    to: message.from,
+                    text: {body: 'Test: ' + message.text.body}
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            
+            res.json({ success: true });
+        } catch (error) {
+            console.error('Error sending WhatsApp message:', error);
+            res.status(500).json({ error: 'Failed to send WhatsApp message' });
+        }
     }
 });
