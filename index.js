@@ -5,6 +5,7 @@ const axios = require('axios').default;
 require('dotenv').config();
 
 const app = express();
+
 const port = process.env.PORT;
 
 const token = process.env.TOKEN;
@@ -27,14 +28,10 @@ app.get("/webhook", (req, res) => {
     let challenge = req.query["hub.challenge"];
   
     if (mode && token) {
-      if (mode == "subscribe") {
-        console.log(verify_token);
+      if (mode === "subscribe" && token === verify_token) {
         console.log("WEBHOOK_VERIFIED");
         res.status(200).send(challenge);
       } else {
-        console.log((token));
-        console.log(port);
-        console.log(verify_token);
         res.sendStatus(403);
       }
     }
