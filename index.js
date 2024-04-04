@@ -8,7 +8,7 @@ const app = express();
 
 const port = process.env.PORT;
 
-// const token = process.env.WHATSAPP_TOKEN
+const token = process.env.WHATSAPP_TOKEN
 
 const verify_token = process.env.VERIFY_TOKEN;
 
@@ -44,6 +44,7 @@ app.post('/webhook', async (req, res) => {
                     text: {body: 'Test: ' + message.text.body}
                 },
                 headers: {
+                    Authorization: token,
                     'Content-Type': 'application/json'
                 }
             })
