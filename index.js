@@ -9,6 +9,8 @@ const port = process.env.PORT;
 
 const token = process.env.TOKEN;
 
+const verify_token = process.env.VERIFY_TOKEN
+
 app.use(bodyParser.json())
 
 app.listen(port, () => console.log('app is listening'))
@@ -33,9 +35,9 @@ app.get("/webhook", (req, res) => {
         console.log(mode == "subscribe");
         console.log((token));
         console.log(typeof(token));
-        console.log(process.env.VERIFY_TOKEN)
-        console.log(typeof(process.env.VERIFY_TOKEN))
-        console.log(process.env.VERIFY_TOKEN == token);
+        console.log(verify_token)
+        console.log(typeof(verify_token))
+        console.log(verify_token == token);
         res.sendStatus(403);
       }
     }
