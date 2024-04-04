@@ -9,8 +9,7 @@ const port = process.env.PORT;
 
 const token = process.env.TOKEN;
 
-const verifyToken = process.env.VERIFY_TOKEN;
-const app_secret = process.env.APP_SECRET;
+const verify_token = process.env.VERIFY_TOKEN;
 
 app.use(bodyParser.json())
 
@@ -29,8 +28,7 @@ app.get("/webhook", (req, res) => {
   
     if (mode && token) {
       if (mode == "subscribe") {
-        console.log(verifyToken);
-        console.log(app_secret);
+        console.log(verify_token);
         console.log("WEBHOOK_VERIFIED");
         res.status(200).send(challenge);
       } else {
