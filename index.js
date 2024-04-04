@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT;
 
-const token = 'EAAGT5T53Y4gBOZBVwWciG5mfZAwgQKCZCDKMGuvD48RhP1UY2dAzi0dwaZCJsl9iQxBAMc5N2ynQo8FK1KHmGu2WUSqDw3iz8Xn6OzXTs4JETKDkTH39G2HQU2ordOxJmRJbWIqz3ZAQiwTgWxlKX0sN1VZCXKLy5noEsm4LS0vFTMIsNqaCnFb0vbi8qbGxkxWSo8YkdAqM239n2jN9EZD';
+const token = 'EAAGT5T53Y4gBOy72rReJ1q9RksbIoiisuGe4ZAIOZCbqBv4sUQEl7DtWAmGRIVjz62COuWYLjPD4gHRansrHkbA3ngcRKe3PY9vmDKU4yJ7ZCCarUtRteMewJAjMwpkxFbeJifJl4EZBoab1QpEqzWbhEfL68WXPcEF4nhNRhAwFwCtxSUM7quoPZC8IvkHuZAKFflej8I39DlIg2hT9gZD';
 
 app.use(bodyParser.json())
 
