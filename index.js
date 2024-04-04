@@ -30,7 +30,9 @@ app.get("/webhook", (req, res) => {
         res.status(200).send(challenge);
       } else {
         console.log(mode);
+        console.log(mode == subscribe);
         console.log(token);
+        console.log(process.env.VERIFY_TOKEN == token);
         res.sendStatus(403);
       }
     }
