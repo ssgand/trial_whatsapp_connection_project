@@ -35,7 +35,7 @@ app.post('/webhook', async (req, res) => {
     
     
         try {
-            axios({
+            await axios({
                 method: 'POST',
                 url: 'https://graph.facebook.com/v19.0/' + phone_number_id + '/messages',
                 data: {
